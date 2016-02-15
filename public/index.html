@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat - With love for Ciklum</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <!--build:css /css/style.combined.min.css--> 
+        <link rel="stylesheet" type="text/css" href="./css/output.css">
+        <!--endbuild--> 
+        <!--build:css /css/libs.combined.min.css--> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <!--endbuild-->
+        <script src="//cdn.socket.io/socket.io-1.4.5.js"></script>
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="./js/handlebars-latest.js"></script>
+        <script src="./js/jquery-ui.js"></script>
+        <script src="./js/myscripts.js"></script>
+	 
+    </head>
+    <body>
+        <div id="connectionError" class="disconnecting" style="display:none;">
+            <div class="background"></div>
+            <div class="inside-block">
+                <div class="disconect">Reconnecting</div>
+                <div class="spiner"><i class="fa fa-spinner fa-pulse fa-inverse"></i></div>
+            </div>
+        </div>
+        <div id="loginBlock" class="disconnecting">
+            <div class="background"></div>
+            <div class="inside-block">
+                <label for="user-name">Login</label>
+                <input name="username" autofocus="autofocus" type="text" placeholder="Write nickname ..." value=""/>
+                <i id="loginBtn" class="fa fa-sign-in"></i>
+                <div id="username_error" class="error" style="display:none">User with the same nick already exist, please chose other name</div>
+            </div>
+        </div>
+        <div class="header">
+            <div>
+                <i id="leftBarBtn" class="fa fa-bars left fa-3 fa-inverse"></i>
+            </div>
+            <div class="header-chart">
+                <div class="header-chart-indicator"></div>
+                chat
+            </div>
+            <div>
+                <i id="rightBarBtn" class="fa fa-bars right fa-3 fa-inverse"></i>
+            </div>
+        </div>
+        <div class="body">
+            <div id="roomsBlock" class="bar left-bar">
+                <div class="bar-title">Rooms</div>
+                <div class="grey-gradient"></div>
+                <div class="rooms-list" id="roomsList">
+                    <div class="room active-room">General</div>
+                    <div class="room">Other room 1 <i class="fa fa-pencil-square-o"></i><i class="fa fa-times"></i></div>
+                    <div class="room">Other room 2 <i class="fa fa-pencil-square-o"></i><i class="fa fa-times"></i></div>
+                    <div class="room"><input class="editroom" type="text" value ="Other room 2"/> <i class="fa fa-pencil-square-o"></i><i class="fa fa-times"></i></div>
+                </div>
+                <div id="roomname_error" class="error" style="display:none">Room with the same nick already exist, please chose other name</div>
+                <div class="message-input">
+                    <input id="createRoomInput" type="text" placeholder="Create room..."/>
+                    <i id="createRoomButton" class="fa fa-check"></i>
+                </div>
+            </div>
+            <div class="chat" id="chat">
+                <div class="messages-block" id="messagesList">
+
+                    <div class="message-block">
+                        <div class="information name">
+                            test
+                        </div>
+                        <div class="message other-message">
+                            <div class="triangle"></div>
+                            test message test message test message test message test message test message test message test message test message test message test message test message test message test message test message test message test messagetest message test messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest message test message test message
+                        </div>
+                        <div class="information time">
+                            14:58
+                        </div>
+                    </div>
+                </div>
+                <div class="message-input">
+                    <div class="user-name" id="userName">test</div>
+                    <input id="SendMessageInput" type="text" placeholder="Send message..."/>
+                    <i id="SendMessageButton" class="fa fa-paper-plane"></i>
+                </div>
+            </div>
+            <div class="bar right-bar" id="usersBlock">
+                <div class="bar-title">Users in room</div>
+                <div class="user-list-block">
+                <ul class="user-list" id="usersList">
+                    <li>user1</li>
+                    <li>user2</li>
+                    <li>user1</li>
+                    <li>user2</li>
+                    <li class="my-user">me</li>
+                    <li>user1</li>
+                    <li>user2</li>
+                </ul>
+                </div>
+            </div>
+        </div>
+        <!--<script data-main="./js/includejs" src="./js/libraries/require.js"></script>-->
+    </body>
+    <script id="roomsListTemplate" type="text/x-handlebars-template">
+        {{#each rooms}}
+            <div class="room {{#if isActive}}active-room{{/if}}" data-id='{{id}}'><span>{{name}}</span> {{# if isOwner }}<i class="fa fa-pencil-square-o"></i> <i class="fa fa-times"></i>{{/if}}</div>
+        {{/each}}
+    </script>
+    <script id="usersListTemplate" type="text/x-handlebars-template">
+        {{#each users}}
+            <li {{#if isMe}}class="my-user"{{/if}}>{{name}}</li>
+        {{/each}}
+    </script>
+    <script id="messagesListTemplate" type="text/x-handlebars-template">
+        {{#each messages}}
+            <div class="message-block">
+                <div class="information name">
+                    {{name}}
+                </div>
+                <div class="message {{#if isMy}}my-message{{else}}other-message{{/if}}">
+                    <div class="triangle"></div>
+                    {{message}}
+                </div>
+                <div class="information time">
+                    {{date}}
+                </div>
+            </div>
+        {{/each}}
+    </script>
+</html>
